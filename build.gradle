@@ -1,0 +1,23 @@
+buildscript {
+
+    ext{
+        gradleVersion = '7.3.0'
+        kotlinVersion = '1.9.0'
+        navigationVersion = '2.5.0'
+        hiltDaggerVersion = '2.47'
+    }
+
+    repositories {
+        google()
+        mavenCentral()
+        maven{ url 'https://artifacts.netcore.co.in/artifactory/android'}
+        maven { url "https://jitpack.io" }
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:$gradleVersion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hiltDaggerVersion"
+        classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion"
+    }
+}

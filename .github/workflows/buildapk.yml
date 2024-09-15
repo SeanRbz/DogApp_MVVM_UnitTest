@@ -1,0 +1,43 @@
+# .github/workflows/build-apk.yml
+name: Build APK
+
+on:
+  workflow_run:
+    workflows: ["Super Linter"] 
+    types:
+      - completed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11' 
+          distribution: 'adopt'
+
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+            ${{ runner.os }}-gradle
+        
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+                 
+      - name: Build APK
+        run: ./gradlew assembleRelease
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: DogApp.apk
+          path: app/build/outputs/apk/release/app-release-unsigned.apk
